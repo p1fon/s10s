@@ -1,0 +1,71 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='test.css')}}">
+{% endblock %}
+
+
+{% block title %}
+    {% if title %}{{ title }} - Сайт класса{% else %}Сайт класса{% endif %}
+{% endblock %}
+
+{% block navbar %}
+  <nav class="navbar navbar-default navbar-static-top navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Сайт 5"Б" класса</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            {% if title=='Новости' %}<li class="active">{% else %}<li>{% endif %}
+                <a href="{{ url_for('index') }}">Новости</a></li>
+            {% if current_user.username=='admin' %}
+            {% if title=='Редактор новостей' %}<li class="active">{% else %}<li>{% endif %}
+            <a href="{{ url_for('news_creator') }}">Редактор новостей</a></li>
+            {% endif %}
+            {% if current_user.is_anonymous %}
+            {% if title=='Войти' %}<li class="active">{% else %}<li>{% endif %}
+            <a href="{{ url_for('login') }}">Войти</a></li>
+            {% else %}
+            <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+            {% endif %}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {#<li class="active"><a href="./">Светлая тема<span class="sr-only">(current)</span></a></li>
+            <li><a href="../navbar-fixed-top/">Тёмная тема</a></li>#}
+            <li><a href="http://schule10.edusite.ru/">Сайт школы №10</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+{% endblock %}
+{% block content %}
+    <div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block app_content %}{% endblock %}
+    </div>
+{%- block footer %}
+<footer>&copy; 2018 Виктор Плотников</footer>
+{%- endblock footer %}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+{% endblock %}

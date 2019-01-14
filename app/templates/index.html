@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    {% for bpost in bposts %}
+	<p>
+		{% include '_post.html' %}
+	</p>
+	{% endfor %}
+{% endblock %}

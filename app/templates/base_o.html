@@ -1,0 +1,62 @@
+{% extends 'bootstrap/base.html' %}
+
+
+{% block title %}
+    {% if title %}{{ title }} - Сайт класса{% else %}Сайт класса{% endif %}
+{% endblock %}
+
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <a class="navbar-brand" href="#">Never expand</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarsExample01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('index') }}">Новости</a>
+                </li>
+                {% if current_user.username=='admin' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('news_creator') }}">Редактор новостей</a>
+                </li>
+                {% endif %}
+                {% if current_user.is_anonymous %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}">Войти</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Выйти</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block app_content %}{% endblock %}
+    </div>
+
+{%- block footer %}
+<footer>&copy; 2018 Awesome, Inc.</footer>
+{%- endblock footer %}
+{% endblock %}
